@@ -27,6 +27,8 @@ h1 {
   border-radius: 5px;
   background-color: #fafafa;
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .message {
@@ -34,18 +36,18 @@ h1 {
   padding: 8px 12px;
   border-radius: 20px;
   max-width: 80%;
-  display: inline-block;
+  word-wrap: break-word;
 }
 
 .message.user {
   background-color: #d1e7ff;
-  float: right;
+  align-self: flex-end;
   text-align: right;
 }
 
 .message.bot {
   background-color: #dff6dd;
-  float: left;
+  align-self: flex-start;
   text-align: left;
 }
 
@@ -74,4 +76,9 @@ button {
 
 button:hover {
   background-color: #0b5ed7;
+}
+
+button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
 }
