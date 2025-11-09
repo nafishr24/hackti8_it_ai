@@ -82,3 +82,32 @@ button:disabled {
   background-color: #6c757d;
   cursor: not-allowed;
 }
+
+/* Tambahkan di akhir file style.css */
+
+.chat-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  justify-content: center;
+}
+
+.control-btn {
+  padding: 8px 16px;
+  border: 1px solid #0d6efd;
+  background-color: white;
+  color: #0d6efd;
+  border-radius: 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.control-btn:active {
+  transform: scale(0.98);
+}

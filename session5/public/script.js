@@ -1,7 +1,76 @@
 const form = document.getElementById("chat-form");
 const input = document.getElementById("user-input");
 const chatBox = document.getElementById("chat-box");
+const newChatBtn = document.getElementById("new-chat-btn");
+const clearHistoryBtn = document.getElementById("clear-history-btn");
 
+// Variabel untuk session management
+let currentSessionId = generateSessionId();
+let conversationHistory = [];
+
+// Generate session ID unik
+function generateSessionId() {
+  return (
+    "session_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9)
+  );
+}
+
+// Event listener untuk tombol New Chat
+newChatBtn.addEventListener("click", async function () {
+  // Clear chat box
+  chatBox.innerHTML = "";
+
+  // Generate session baru
+  currentSessionId = generateSessionId();
+  conversationHistory = [];
+
+  // Clear history di server
+  try {
+    await fetch("/api/chat/new", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sessionId: currentSessionId,
+      }),
+    });
+    console.log("New chat session started:", currentSessionId);
+  } catch (error) {
+    console.error("Error starting new chat:", error);
+  }
+
+  // Focus ke input
+  input.focus();
+});
+
+// Event listener untuk tombol Clear History
+clearHistoryBtn.addEventListener("click", async function () {
+  // Clear chat box
+  chatBox.innerHTML = "";
+  conversationHistory = [];
+
+  // Clear history di server untuk session ini
+  try {
+    await fetch("/api/chat/new", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sessionId: currentSessionId,
+      }),
+    });
+    console.log("History cleared for session:", currentSessionId);
+  } catch (error) {
+    console.error("Error clearing history:", error);
+  }
+
+  // Focus ke input
+  input.focus();
+});
+
+// Modifikasi form submit untuk include sessionId
 form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
@@ -26,6 +95,7 @@ form.addEventListener("submit", async function (e) {
       },
       body: JSON.stringify({
         conv: [{ role: "user", text: userMessage }],
+        sessionId: currentSessionId,
       }),
     });
 
@@ -61,6 +131,7 @@ form.addEventListener("submit", async function (e) {
   }
 });
 
+// Fungsi-fungsi helper yang sudah ada
 function appendMessage(sender, text, returnElement = false) {
   const msg = document.createElement("div");
   msg.classList.add("message", sender);
